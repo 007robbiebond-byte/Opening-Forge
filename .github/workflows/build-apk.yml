@@ -27,18 +27,24 @@ jobs:
           unzip -o opening-forge-new-clean.zip -d project
           echo "Files extracted:"
           find project -maxdepth 3 -type f | head -200
-
-      - name: Locate Android project
+                - name: Inspect extracted project
         run: |
-          if [ -f project/android/gradlew ]; then
-            echo "ANDROID_DIR=project/android" >> "$GITHUB_ENV"
-          elif [ -f project/gradlew ]; then
-            echo "ANDROID_DIR=project" >> "$GITHUB_ENV"
-          else
-            echo "::error::Could not find Gradle wrapper. Check the extracted project structure."
-            exit 1
-          fi
+          echo "===== ZIP CONTENTS ====="
+          unzip -l opening-forge-new-clean.zip | head -100
 
+          echo "===== EXTRACTED FILES ====="
+          find project -maxdepth 5 -type f | head -200
+
+          echo "===== GRADLE FILES ====="
+          find project -type f \( \
+            -name "gradlew" -o \
+            -name "settings.gradle" -o \
+            -name "settings.gradle.kts" -o \
+            -name "build.gradle" -o \
+            -name "build.gradle.kts" \
+          \) | head -100
+
+      
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
