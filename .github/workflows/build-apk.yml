@@ -54,12 +54,12 @@ jobs:
           mkdir -p project
           unzip -o opening-forge-new-clean.zip -d project
 
-      - name: Generate Gradle wrapper
+     - name: Generate Gradle wrapper
         run: |
-          sudo apt-get update
-          sudo apt-get install -y gradle
           cd project/android
-          gradle wrapper --gradle-version 8.7
+          curl -fL https://services.gradle.org/distributions/gradle-8.7-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+          /tmp/gradle-8.7/bin/gradle wrapper --gradle-version 8.7
 
       - name: Build APK
         run: |
