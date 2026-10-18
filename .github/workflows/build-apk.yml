@@ -3,7 +3,9 @@ name: Build Opening Forge APK
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches:
+      - main
+      - master
 
 jobs:
   build:
@@ -17,7 +19,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '17'
 
       - name: Set Android SDK path
         run: |
@@ -29,7 +31,7 @@ jobs:
       - name: Check Android SDK tools
         run: |
           if [ ! -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
-            echo "ERROR: Android SDK manager was not found."
+            echo "Android SDK manager not found"
             ls -la "$ANDROID_HOME/cmdline-tools/"
             exit 1
           fi
@@ -54,7 +56,7 @@ jobs:
           mkdir -p project
           unzip -o opening-forge-new-clean.zip -d project
 
-     - name: Generate Gradle wrapper
+      - name: Generate Gradle wrapper
         run: |
           cd project/android
           curl -fL https://services.gradle.org/distributions/gradle-8.7-bin.zip -o /tmp/gradle.zip
